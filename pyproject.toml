@@ -19,6 +19,15 @@ classifiers = [
 dependencies = [
 	"buildbot >= 3.0",
 ]
+
+[project.optional-dependencies]
+test = [
+    "black",
+    "flake8",
+    "pytest",
+    "pytest-mock",
+]
+
 [project.entry-points."buildbot.reporters"]
 MattermostStatusPush = "buildbot_mattermost.reporter:MattermostStatusPush"
 
