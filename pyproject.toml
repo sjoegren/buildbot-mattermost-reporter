@@ -1,0 +1,31 @@
+[project]
+name = "buildbot-mattermost-reporter"
+version = "0.0.1"
+authors = [
+  { name="Aksel Sjögren", email="sjoegren@mailc.net" },
+]
+description = "Mattermost status reporter for Buildbot"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+	"Development Status :: 3 - Alpha",
+	"Environment :: Plugins",
+	"Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = [
+	"buildbot >= 3.0",
+]
+[project.entry-points."buildbot.reporters"]
+MattermostStatusPush = "buildbot_mattermost.reporter:MattermostStatusPush"
+
+[project.urls]
+Homepage = "https://github.com/sjoegren/buildbot-mattermost-reporter"
+Issues = "https://github.com/sjoegren/buildbot-mattermost-reporter/issues"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
