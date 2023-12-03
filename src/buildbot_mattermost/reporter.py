@@ -42,7 +42,7 @@ class MattermostStatusPush(buildbot.reporters.http.HttpStatusPush):
         **kwargs,
     ):
         if not webhook_url:
-            config.error("webhook_url is required")
+            config.error("webhook_url must be set to the Mattermost webhook URL")
         self._channel = channel
         self._icon_url = icon_url
         self._icon_emoji = icon_emoji
@@ -135,7 +135,7 @@ def mattermost_message_formatter_fn(
     # Make a list of Mattermost usernames from the builds list of owners.
     if username_fn is None:
         username_fn = mm_user_from_email
-    build["custom_owners"] = [username_fn(o) for o in getprop("owners", []) if o]
+    build["custom_owners"] = set(username_fn(o) for o in getprop("owners", []) if o)
 
     # Convert datetimes to ISO timestamp strings
     for key in ("started_at", "complete_at"):
@@ -203,7 +203,7 @@ def _build_completed(build):
 
     # If the build failed, include as list of build owners to ping
     if build["results"] == results.FAILURE and build["custom_owners"]:
-        owners = ", ".join(f"@{u}" for u in build["custom_owners"])
+        owners = ", ".join(f"@{u}" for u in sorted(build["custom_owners"]))
         rv["text"] += f"\n{owners}"
 
     try:

@@ -26,6 +26,7 @@ test = [
     "flake8",
     "pytest",
     "pytest-mock",
+    "txrequests",
 ]
 
 [project.entry-points."buildbot.reporters"]
