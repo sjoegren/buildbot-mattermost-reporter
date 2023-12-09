@@ -9,7 +9,9 @@ from buildbot_mattermost import reporter
 
 @pytest.fixture
 def context_build():
-    started_at = datetime.datetime.fromtimestamp(1_700_000_000, tz=datetime.UTC)
+    started_at = datetime.datetime.fromtimestamp(
+        1_700_000_000, tz=datetime.timezone.utc
+    )
     ctx = {}
     ctx["build"] = {
         "number": 47,
