@@ -1,12 +1,12 @@
 [project]
 name = "buildbot-mattermost-reporter"
-version = "0.0.1"
 authors = [
   { name="Aksel Sjögren", email="sjoegren@mailc.net" },
 ]
 description = "Mattermost status reporter for Buildbot"
 readme = "README.md"
 requires-python = ">=3.8"
+dynamic = ["version"]
 classifiers = [
 	"Development Status :: 3 - Alpha",
 	"Environment :: Plugins",
@@ -37,5 +37,10 @@ Homepage = "https://github.com/sjoegren/buildbot-mattermost-reporter"
 Issues = "https://github.com/sjoegren/buildbot-mattermost-reporter/issues"
 
 [build-system]
-requires = ["setuptools"]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]

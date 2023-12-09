@@ -2,9 +2,12 @@ PYTHON_PACKAGE = buildbot-mattermost-reporter
 SRC = src
 ENV = env
 
-.PHONY: test flake8 black checkformat unittest
+.PHONY: test build flake8 black checkformat unittest
 
 test: flake8 checkformat unittest
+
+build:
+	python -m build
 
 flake8: | $(ENV)
 	$(ENV)/bin/flake8 $(SRC)
@@ -24,4 +27,4 @@ $(ENV):
 	$@/bin/pip install $(PYTHON_PACKAGE)[test]
 
 clean:
-	rm -rf $(ENV)
+	rm -rf $(ENV) dist
