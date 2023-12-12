@@ -135,14 +135,7 @@ def mattermost_message_formatter_fn(
     # Make a list of Mattermost usernames from the builds list of owners.
     if username_fn is None:
         username_fn = mm_user_from_email
-    build["custom_owners"] = set(username_fn(o) for o in getprop("owners", []) if o)
-
-    # Convert datetimes to ISO timestamp strings
-    for key in ("started_at", "complete_at"):
-        try:
-            build[key] = _format_dt(build[key], timezone)
-        except KeyError:
-            pass
+    build_owner_usernames = set(username_fn(o) for o in getprop("owners", []) if o)
 
     webhook_request = {
         "username": username,
@@ -158,9 +151,9 @@ def mattermost_message_formatter_fn(
     buildbot_url = "{0.scheme}://{0.netloc}".format(urlparse(build.get("url", "")))
 
     if build.get("complete"):
-        message = _build_completed(build)
+        message = _build_completed(build, build_owner_usernames, timezone)
     else:
-        message = _build_started(build)
+        message = _build_started(build, timezone)
 
     # Set common items in the Mattermost attachment.
     message.update(
@@ -178,9 +171,11 @@ def mattermost_message_formatter_fn(
     return webhook_request
 
 
-def _build_started(build):
+def _build_started(build, timezone):
     rv = {}
-    rv["pretext"] = "Build started at {}".format(build["started_at"])
+    rv["pretext"] = "Build started at {}".format(
+        _format_dt(build["started_at"], timezone)
+    )
     rv["text"] = "{} `{}`".format(ICON_BUILD_STARTED, build["state_string"])
     try:
         rv["color"] = COLOR_MAP_RESULT[build["results"]]
@@ -189,9 +184,11 @@ def _build_started(build):
     return rv
 
 
-def _build_completed(build):
+def _build_completed(build, owners, timezone):
     rv = {}
-    rv["pretext"] = "Build finished at {}".format(build["complete_at"])
+    rv["pretext"] = "Build finished at {}".format(
+        _format_dt(build["complete_at"], timezone)
+    )
 
     rv["text"] = "{status_icon} `{state_string}`".format(
         status_icon=ICON_MAP_RESULT.get(
@@ -201,8 +198,8 @@ def _build_completed(build):
     )
 
     # If the build failed, include as list of build owners to ping
-    if build["results"] == results.FAILURE and build["custom_owners"]:
-        owners = ", ".join(f"@{u}" for u in sorted(build["custom_owners"]))
+    if build["results"] == results.FAILURE and owners:
+        owners = ", ".join(f"@{u}" for u in sorted(owners))
         rv["text"] += f"\n{owners}"
 
     try:
