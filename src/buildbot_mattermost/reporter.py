@@ -167,7 +167,6 @@ def mattermost_message_formatter_fn(
         {
             "author_name": "Buildbot",
             "author_link": buildbot_url,
-            "author_icon": "{}/img/icon.svg".format(buildbot_url),
             "title": "Build: {builder[name]} #{number}".format(**build),
             "title_link": build.get("url"),
             "fallback": "{builder[name]} #{number} {url}: {state_string}".format(

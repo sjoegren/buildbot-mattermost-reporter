@@ -68,7 +68,6 @@ def test_message_formatter_fn_completed_success(context_build_complete):
     assert ret == {
         "attachments": [
             {
-                "author_icon": "http://buildbot.example.com/img/icon.svg",
                 "author_link": "http://buildbot.example.com",
                 "author_name": "Buildbot",
                 "color": "#66bb6a",
@@ -94,7 +93,6 @@ def test_message_formatter_fn_failure(context_build_complete):
     assert ret == {
         "attachments": [
             {
-                "author_icon": "http://buildbot.example.com/img/icon.svg",
                 "author_link": "http://buildbot.example.com",
                 "author_name": "Buildbot",
                 "color": "#e74c3c",
@@ -160,7 +158,6 @@ def test_message_formatter_fn_started(context_build):
     assert ret == {
         "attachments": [
             {
-                "author_icon": "http://buildbot.example.com/img/icon.svg",
                 "author_link": "http://buildbot.example.com",
                 "author_name": "Buildbot",
                 "color": "#66bb6a",
